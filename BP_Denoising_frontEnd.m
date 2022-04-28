@@ -1,6 +1,8 @@
 %TSD De-noising procedure front-end code.
 %This front-end script will aid to load the raw TSD data and make all
 %necessary calls to functions that do the denoising procedure.
+%
+%Note: This example uses integrated deflection depths from deflection slope estimates. Yet the code should work the same way if fed the deflection slope estimates directly!
 %Release candidate v2022-05-01
 
 %%
@@ -20,7 +22,7 @@ inputFilename = '0033_FHWA_EFL_PFS_1m_Deflection_only_6_13_19.xlsb';
 inputSheet    = '0033_FHWA_EFL_PFS_1m_TSD';
 
 
-latLongData = xlsread(inputFilename,inputSheet,'bj2:bo79257');  %%lat long data in decimal degrees
+latLongData = xlsread(inputFilename,inputSheet,'ax2:ay79257');  %%lat long data in decimal degrees
 stationData = xlsread(inputFilename,inputSheet,'i2:j79257');    %% station in km
 [~ ,roadID,~] = xlsread(inputFilename,inputSheet,'a2:a79257');   %%roadID is an alphanumeric field. STORED AS CELL ARRAY! this one combines the road id + the segm. id. Try as unique identifier...
 [~,roadName,~] = xlsread(inputFilename,inputSheet,'e2:e79257'); %%roadName is an alphanumeric field. STORED AS CELL ARRAY!
