@@ -1,5 +1,8 @@
 # concreteTSD
-These scripts and functions are the companion code to my Ph. D. dissertation on TSD data analysis and interpretation for jointed pavements.
+These scripts and functions are the companion code to my Ph. D. Dissertation on TSD data analysis and interpretation for jointed pavements.
+
+# Link to Dissertation
+My Dissertation can be retrieved from: https://vtechworks.lib.vt.edu/handle/10919/111606 
 
 # Bsaic use instructions
 Matlab (or GNU-Octave [see below for compatibility concerns]) is needed to execute this code! None of these software tools is provided here. Matlab(R) can be acquired from The Mathworks Inc., GNU-Octave can be downloaded from https://www.gnu.org/software/octave/index
