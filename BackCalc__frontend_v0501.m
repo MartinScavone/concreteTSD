@@ -43,6 +43,10 @@ addpath('waveletDenoising\')%
 %% EXPORT FILENAME
 exportFilename = 'MnROAD_239_v20230425.xlsx';
 
+%road id information
+roadName = 'MnROAD LVR'
+roadID = '239'
+
 disp('Loading TSD Data')
 inputFilename = 'T17202109270013_5cm.xlsx';
 inputSheet    = 'TSD';
