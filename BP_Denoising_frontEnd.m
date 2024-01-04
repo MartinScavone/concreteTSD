@@ -130,6 +130,7 @@ for k = 1:numRoads
     hold on
     plot(station,denoisedTSD,'color',[0.42 0.25 0.39]) %grey-maroon color
     legend('noisy','denoised')
+    set(gca,'fontsize',16)
     hold off
     
     %% export-fig call. ENABLE IF YOU WANT PDF OUTPUT!
