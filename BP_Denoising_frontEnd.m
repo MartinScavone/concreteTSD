@@ -10,7 +10,7 @@ tic
 clc
 clear variables
 close all
-addpath('./TSDData')
+addpath('./BPD_RWL1')
 addpath('./WAVELAB850')
 addpath('./WAVELAB850/Orthogonal');  
 addpath('./WAVELAB850/Utilities');  
