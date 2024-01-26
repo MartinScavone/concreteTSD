@@ -17,8 +17,8 @@ The BPD+RWWL1 example case study using the National Mall data may take 45-60 min
 
 # License Terms and Disclaimer 
 This code is distributed under the terms of the Creative Commons BY-SA 4.0 International. The terms of the license can be found in: https://creativecommons.org/licenses/by-sa/4.0/
-Also, this code is distributed AS-IS. If you agree to utilize this code, you become responsible of whatever decisions you derive off the code's outcome. Yet anyway, if you encounter a big bug in the code or find something that may warrant a revision, you're most welcome to reach out to me so that the issue can be tackled (I can be found over linkedIn).
-Please respect the license terms, and may this code be useful to you, enjoy!!.
+Also, this code is distributed AS-IS. If you agree to utilize this code, you become responsible of whatever decisions you make out of the code's outcome. Yet anyway, if you encounter a big bug in the code or find something that may warrant a revision, please feel welcome to reach out so that the issue can be tackled (I can be found over linkedIn).
+Please respect the license terms, and may this code be useful to you. Enjoy!!.
 
 # GNU-Octave compatibility
 This code might work on GNU-Octave; as of May 2022, I haven't tested it myself. However, since it both reads and writes to MS Excel files, it may be very slow to initialize and export the results.
