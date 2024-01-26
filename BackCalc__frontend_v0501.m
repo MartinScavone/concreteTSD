@@ -1,5 +1,5 @@
-%% Concrete back-calculation - FRONT-END SCRIPT FOR TSD BACK-CALCULATION
-%%- TSD RUN 5cm from MnROAD section #239
+%% Concrete back-calculation from TSD: FRONT-END SCRIPT FOR LTE BACK-CALCULATION
+%% TSD 5-cm dataset from MnROAD section #239
 
 %V6.1 - 2024-01-26
 % --Updated output file: add header row to the output table describing each column.
@@ -30,15 +30,14 @@ doBackCalc = 1;		%Boolean: 1 = do the back-calculation process. 0 = limit to imp
 %For faster code, disable the "matrix close to singular" warnings that may pop up. They slow the code too much!
 %Follow: https://www.mathworks.com/help/matlab/ref/lastwarn.html#responsive_offcanvas
 
-load matlabWarningMessage;  %<---this tiny variable has the warning message text and ID for the 'singular matrix warning"
-
+load matlabWarningMessage;  %<---this tiny variable has the warning message text and ID for the 'singular matrix warning'
 %Turn off the warning
 warnStruct = warning('off',warnID);
 % <<RESTORE IT AT THE END OF THE CODE!>>
 
 %% addpath to dependencies (Denoising and back-calc engine)
 addpath('back-calc\')
-addpath('waveletDenoising\')%
+addpath('waveletDenoising\')
 
 %% EXPORT FILENAME. User: change this output file name as you see fit. 
 exportFilename = 'MnROAD_239_v20230425.xlsx';
@@ -72,7 +71,7 @@ TSDpoints = [0.130,0.215,0.300,0.450,0.600,0.900,1.500];
 TSDpoints = TSDpoints';
 numTSDSensors = length(TSDpoints);
 
-%% THICKNESS DATA. - this value is in inches. Convert to meters.
+%% THICKNESS DATA. Loaded value is in inches. Convert to meters.
 thickness = 4.*ones(size(stationData));
 thickness = thickness .*2.54./100;
 
@@ -80,7 +79,7 @@ latFrom = latLongData(:,1);
 longFrom= latLongData(:,2);
 clear latLongData
 
-%% 3) WAVELET DENOISING OF THE TSD DATA - 
+%% 3) WAVELET DENOISING OF THE TSD DATA 
 disp('TSD denoising via Haar wavelet decomposition with local adaptive FDR [Katicha et al., 2024]')
 
 %% 3.0) Do the data denoising    
@@ -145,6 +144,7 @@ if doPlots
 end  %endif doPlots
 drawnow
 
+%% DO THE BACK-CALCULATION!
 %% 5) update v2022-02-28. Manual selector of weak joints to back-calculate
 while doBackCalc
     %Automated joint search using FINDPEAKS on the SL 310 using a minimum peak height of 75% quantile,
@@ -170,17 +170,16 @@ while doBackCalc
     else
         shortSlabs = 0;
     end
+    nu = 0.21;
+    pressure = 115./145.04.*1e6; %TSD Wheel load -> 115 PSI to PA
     
     for i = 1:nnn		
         jointIndex = index(i);
         fprintf('processing joint at station [m] %g  \n',jointPosition(i));
         fprintf('\t solving continuous component \n')
-		
-        nu = 0.21;
-        pressure = 115./145.04.*1e6; %TSD Wheel load -> 115 PSI to PA
             
         if ~shortSlabs
-            %% back-calculation fro regular-sized slabs. Divide the problem in two as per TRB-2023 paper (Dissertation paper IV), with Aftermath04 update.
+            %% back-calculation foR regular-sized slabs [slab length >2.00m]. Divide the problem in two as per TRB-2023 paper (Dissertation paper IV), with Aftermath04 update.
             %STAGE 1:
             %solve k,E,G ahead of the joint (mid-slab locations).
 	    %DO MULTIPLE BACK-CALC OF THE CONTINUOUS COMPONENT FOR K, E, G, keep the mean value as representative one.
@@ -250,7 +249,7 @@ while doBackCalc
                 end  
 		
                 %% Solving the joint's LTE
-                %% IMPORTANT: VYcomes in mm/s, and vx in m/s. PASS BOTH IN M/sec	        
+                %% IMPORTANT: VY comes in mm/s, and vx in m/s. PASS BOTH IN M/sec	        
                 % update v2023-01-25 -> Remove correction for estimateC,
                 % solve for LTE and Loss of support only!         
 				
@@ -263,7 +262,7 @@ while doBackCalc
                 good_localTSD_pulse = localTSD_short(j,notNANmeas);
                 localTSDpoints = TSDpoints(notNANmeas);	        
                 [LTE(j),LossSupport(j),SSEfinal(j),~,~,~] =  backCalc_joint_0420(localTSDpoints,good_localTSD_pulse./1e3,localvx,jointLocation(j),localThck,localK,localG,localE,nu,localLoad,pressure,doLSPT,verborragia);
-                fprintf('\t joint"s LTE is %g \n',LTE(j))
+                fprintf('\t joint""s LTE is %g \n',LTE(j))
             end
         else
             %update v2023-04-25: Special back-calc solver for short slabs [slab length < 2.00m]. 
@@ -297,7 +296,7 @@ while doBackCalc
                 localTSDpoints = TSDpoints(notNANmeas);
     
                 [localE(j),localK(j),localG(j),LTE(j),SSEfinal(j)] = backCalc_shortSlab(localTSDpoints,localTSD_short./1e3,localvx,jointLocation(j),localLoad,pressure,localThck,nu,subgradeType,verborragia);      
-                fprintf('\t joint"s LTE is %g \n',LTE(j))
+                fprintf('\t joint""s LTE is %g \n',LTE(j))
             end
             %for the fun of it, estimate the loss of support over k-value by
             %comparing the k - Value at the 1.50m measurement to the remaining ones
@@ -327,7 +326,7 @@ while doBackCalc
 	doBackCalc = 0;
 end
 
-%optional - save progress in a big Mat file. USER: Change name of the output file as you see fit.
+%optional - save progress in a big Mat file. USER: Change the name of the output file as you see fit.
 %save MnRoad_239_v20230425.mat
 
 disp('....all completed')
